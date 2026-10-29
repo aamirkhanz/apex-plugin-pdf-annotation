@@ -2,16 +2,15 @@
 
 Mark up PDFs in the page with highlights, drawings, shapes, text, sticky notes and stamps, then save the annotations or export an annotated PDF.
 
-![PDF Annotation](screenshots/preview.png)
+[![Live demo](https://img.shields.io/badge/Live_demo-0f7b72?style=for-the-badge)](https://oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation) &nbsp; Sign in as `demo` with the password `Demo`.
 
-**[Live demo](https://oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation)**: sign in as `demo` with the password `Demo`.
+![PDF Annotation](screenshots/preview.png)
 
 | | |
 |---|---|
 | **Type** | Region plug-in |
 | **Internal name** | `COM.TECHREVX.PDF_ANNOTATION` |
 | **Version** | 1.0 |
-| **Live demo** | [oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation](https://oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation) (user `demo`, password `Demo`) |
 | **Requires** | Oracle APEX 26.2 or later |
 | **License** | MIT |
 
