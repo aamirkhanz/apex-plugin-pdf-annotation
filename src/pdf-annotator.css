@@ -1,0 +1,260 @@
+/*
+ * PDF Annotation region plug-in (TechRevX)
+ * Colors come from Universal Theme variables so the annotator follows light and dark theme styles.
+ */
+.tx-PdfAnnot {
+  --tx-pa-bg: var(--ut-component-background-color, #fff);
+  --tx-pa-stage: var(--ut-body-background-color, #eef0f5);
+  --tx-pa-line: var(--ut-component-border-color, rgba(0, 0, 0, .12));
+  --tx-pa-text: var(--ut-component-text-default-color, #1f2333);
+  --tx-pa-muted: var(--ut-component-text-muted-color, #6b7080);
+  --tx-pa-accent: var(--ut-palette-primary, #3442a8);
+
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 360px;
+  border: 1px solid var(--tx-pa-line);
+  border-radius: 8px;
+  background: var(--tx-pa-bg);
+  color: var(--tx-pa-text);
+  overflow: hidden;
+}
+
+/* ---------- toolbar ---------- */
+.tx-PdfAnnot-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--tx-pa-line);
+}
+
+.tx-PdfAnnot-group { display: flex; align-items: center; gap: 2px; }
+.tx-PdfAnnot-end { margin-left: auto; gap: 4px; }
+
+.tx-PdfAnnot-btn {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--tx-pa-text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.tx-PdfAnnot-btn .fa.fa { font-size: 15px; }
+.tx-PdfAnnot-btn:hover { background: color-mix(in srgb, var(--tx-pa-text) 8%, transparent); }
+.tx-PdfAnnot-btn:focus-visible,
+.tx-PdfAnnot-swatch:focus-visible,
+.tx-PdfAnnot-save:focus-visible { outline: 2px solid var(--tx-pa-accent); outline-offset: 1px; }
+.tx-PdfAnnot-tool[aria-checked="true"] { background: color-mix(in srgb, var(--tx-pa-accent) 16%, transparent); color: var(--tx-pa-accent); }
+
+.tx-PdfAnnot-swatch {
+  width: 22px;
+  height: 22px;
+  margin: 0 2px;
+  padding: 0;
+  border: 2px solid var(--tx-pa-bg);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 0 1px var(--tx-pa-line);
+  cursor: pointer;
+}
+
+.tx-PdfAnnot-swatch.is-active { box-shadow: 0 0 0 2px var(--tx-pa-text); }
+
+.tx-PdfAnnot-select {
+  height: 30px;
+  margin-right: 4px;
+  padding: 0 6px;
+  border: 1px solid var(--tx-pa-line);
+  border-radius: 6px;
+  background: var(--tx-pa-bg);
+  color: var(--tx-pa-text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.tx-PdfAnnot-pageText,
+.tx-PdfAnnot-status { min-width: 44px; color: var(--tx-pa-muted); font-size: 13px; text-align: center; white-space: nowrap; }
+.tx-PdfAnnot-zoomText { min-width: 50px; font-variant-numeric: tabular-nums; }
+
+.tx-PdfAnnot-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--tx-pa-accent);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tx-PdfAnnot-save .fa.fa { font-size: 14px; }
+.tx-PdfAnnot-save:disabled { opacity: .45; cursor: default; }
+
+.tx-PdfAnnot-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tx-pa-accent) 14%, transparent);
+  color: var(--tx-pa-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---------- body ---------- */
+.tx-PdfAnnot-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; min-height: 0; }
+.tx-PdfAnnot-stage { overflow: auto; background: var(--tx-pa-stage); outline: none; }
+.tx-PdfAnnot-pages { display: grid; justify-content: center; gap: 18px; padding: 20px; }
+
+.tx-PdfAnnot-page {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .18), 0 6px 18px -8px rgba(0, 0, 0, .3);
+}
+
+.tx-PdfAnnot-page canvas { display: block; }
+
+.tx-PdfAnnot-layer { position: absolute; inset: 0; z-index: 2; overflow: visible; touch-action: none; }
+
+/* cursors per tool; the highlight tool lets the text layer take the mouse on pages with text */
+.tx-PdfAnnot[data-tool="select"] .tx-PdfAnnot-layer { cursor: default; }
+.tx-PdfAnnot[data-tool="select"] .tx-PdfAnnot-item { cursor: move; }
+.tx-PdfAnnot[data-tool="eraser"] .tx-PdfAnnot-item { cursor: not-allowed; }
+.tx-PdfAnnot[data-tool="text"] .tx-PdfAnnot-layer { cursor: text; }
+.tx-PdfAnnot:is([data-tool="pen"], [data-tool="rectangle"], [data-tool="ellipse"], [data-tool="arrow"], [data-tool="line"], [data-tool="note"], [data-tool="stamp"], [data-tool="highlight"]) .tx-PdfAnnot-layer { cursor: crosshair; }
+.tx-PdfAnnot[data-tool="highlight"] .tx-PdfAnnot-page.has-text .tx-PdfAnnot-layer { pointer-events: none; }
+.tx-PdfAnnot.is-review .tx-PdfAnnot-item { cursor: pointer; }
+
+.tx-PdfAnnot-mark { opacity: .38; mix-blend-mode: multiply; }
+.tx-PdfAnnot-hit { fill: none; stroke: transparent; pointer-events: stroke; }
+.tx-PdfAnnot-item--highlight,
+.tx-PdfAnnot-item--note,
+.tx-PdfAnnot-item--stamp,
+.tx-PdfAnnot-item--text { pointer-events: visiblePainted; }
+.tx-PdfAnnot-text { font-family: "Segoe UI", Arial, sans-serif; white-space: pre; }
+.tx-PdfAnnot-stampText { font-family: "Segoe UI", Arial, sans-serif; }
+.tx-PdfAnnot-selection { fill: none; stroke: var(--tx-pa-accent); stroke-width: 1.2; stroke-dasharray: 4 3; pointer-events: none; }
+
+.tx-PdfAnnot-editor {
+  position: absolute;
+  z-index: 3;
+  min-width: 160px;
+  min-height: 2.4em;
+  padding: 2px 4px;
+  border: 1px dashed var(--tx-pa-accent);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .92);
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.25;
+  resize: both;
+}
+
+/* text layer from PDF.js (web/pdf_viewer.css): transparent, selectable text over the page */
+.tx-PdfAnnot .textLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: clip;
+  line-height: 1;
+  text-align: initial;
+  transform-origin: 0 0;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+
+.tx-PdfAnnot .textLayer :is(span, br) { position: absolute; color: transparent; white-space: pre; cursor: text; transform-origin: 0% 0%; user-select: text; }
+.tx-PdfAnnot .textLayer > :not(.markedContent),
+.tx-PdfAnnot .textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.tx-PdfAnnot .textLayer .markedContent { display: contents; }
+.tx-PdfAnnot .textLayer ::selection { background: rgb(255 212 0 / .45); color: transparent; }
+.tx-PdfAnnot .textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; user-select: none; }
+
+/* ---------- comments panel ---------- */
+.tx-PdfAnnot-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 300px;
+  border-left: 1px solid var(--tx-pa-line);
+  min-height: 0;
+}
+
+.tx-PdfAnnot-panel[hidden] { display: none; }
+.tx-PdfAnnot-panelHead { padding: 12px 14px; border-bottom: 1px solid var(--tx-pa-line); font-weight: 600; }
+.tx-PdfAnnot-count { color: var(--tx-pa-muted); font-weight: 400; }
+.tx-PdfAnnot-list { margin: 0; padding: 8px; overflow-y: auto; list-style: none; }
+
+.tx-PdfAnnot-entry {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 10px;
+  border: 1px solid var(--tx-pa-line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tx-PdfAnnot-entry:hover { border-color: color-mix(in srgb, var(--tx-pa-text) 30%, transparent); }
+.tx-PdfAnnot-entry.is-selected { border-color: var(--tx-pa-accent); box-shadow: 0 0 0 1px var(--tx-pa-accent); }
+.tx-PdfAnnot-entryHead { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.tx-PdfAnnot-entryHead span:not(.tx-PdfAnnot-dot) { color: var(--tx-pa-muted); }
+.tx-PdfAnnot-dot { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 3px; background: var(--dot); }
+.tx-PdfAnnot-remove { margin-left: auto; min-width: 26px; height: 26px; }
+.tx-PdfAnnot-quote { margin: 0; color: var(--tx-pa-muted); font-size: 13px; font-style: italic; line-height: 1.45; }
+.tx-PdfAnnot-comment { margin: 0; font-size: 13px; line-height: 1.45; }
+
+.tx-PdfAnnot-commentInput {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--tx-pa-line);
+  border-radius: 6px;
+  background: var(--tx-pa-bg);
+  color: var(--tx-pa-text);
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.tx-PdfAnnot-meta { color: var(--tx-pa-muted); font-size: 12px; }
+.tx-PdfAnnot-empty { padding: 16px 8px; color: var(--tx-pa-muted); font-size: 13px; }
+
+.tx-PdfAnnot-message { display: flex; align-items: center; justify-content: center; gap: 10px; height: 100%; color: var(--tx-pa-muted); }
+
+.tx-PdfAnnot-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--tx-pa-line);
+  border-top-color: var(--tx-pa-accent);
+  border-radius: 50%;
+  animation: tx-pa-spin .8s linear infinite;
+}
+
+@keyframes tx-pa-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 860px) {
+  .tx-PdfAnnot-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .tx-PdfAnnot-panel { width: auto; max-height: 40%; border-left: 0; border-top: 1px solid var(--tx-pa-line); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tx-PdfAnnot-spinner { animation-duration: 2.4s; }
+}

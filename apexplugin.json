@@ -1,0 +1,48 @@
+{
+  "name": "PDF Annotation",
+  "version": "1.0",
+  "description": "<p>Mark up PDFs in the page with highlights, drawings, shapes, text, sticky notes and stamps, then save the annotations or export an annotated PDF.</p><p>Source: any region source; the first row is the document. Map ID, File Name and the PDF (BLOB) or a URL, plus the column with saved annotations. Tools: highlight (selected text, or an area on scanned pages), pen, rectangle, ellipse, arrow, line, text box, sticky note with comment, stamps (Approved, Rejected and your own), eraser; select to move, recolor or delete; undo and redo; colors and line widths. Comments panel: every annotation with author, time and comment; click to jump to it.</p><p>Requires Oracle APEX 26.2 or later. Documentation, updates and more plug-ins: https://www.techrevx.com</p>",
+  "keywords": [
+    "oracle",
+    "apex",
+    "plugin",
+    "techrevx",
+    "pdf",
+    "annotation",
+    "markup",
+    "highlight",
+    "review",
+    "stamp",
+    "comments"
+  ],
+  "homepage": "https://github.com/aamirkhanz/apex-plugin-pdf-annotation",
+  "bugs": {
+    "url": "https://github.com/aamirkhanz/apex-plugin-pdf-annotation/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "TechRevX",
+    "url": "https://www.techrevx.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aamirkhanz/apex-plugin-pdf-annotation.git"
+  },
+  "oracle": {
+    "versions": [
+      "19c",
+      "21c",
+      "23ai"
+    ],
+    "apex": {
+      "versions": [
+        "26.2"
+      ],
+      "plugin": {
+        "internalName": "COM.TECHREVX.PDF_ANNOTATION",
+        "type": "region",
+        "previewImage": "https://raw.githubusercontent.com/aamirkhanz/apex-plugin-pdf-annotation/main/screenshots/preview.png"
+      }
+    }
+  }
+}
