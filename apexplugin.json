@@ -17,11 +17,13 @@
   ],
   "homepage": "https://github.com/aamirkhanz/apex-plugin-pdf-annotation",
   "bugs": {
-    "url": "https://github.com/aamirkhanz/apex-plugin-pdf-annotation/issues"
+    "url": "https://github.com/aamirkhanz/apex-plugin-pdf-annotation/issues",
+    "email": "aamir_sohail@live.com"
   },
   "license": "MIT",
   "author": {
     "name": "TechRevX",
+    "email": "aamir_sohail@live.com",
     "url": "https://www.techrevx.com"
   },
   "repository": {
