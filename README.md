@@ -4,11 +4,14 @@ Mark up PDFs in the page with highlights, drawings, shapes, text, sticky notes a
 
 ![PDF Annotation](screenshots/preview.png)
 
+**[Live demo](https://oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation)**: sign in as `demo` with the password `Demo`.
+
 | | |
 |---|---|
 | **Type** | Region plug-in |
 | **Internal name** | `COM.TECHREVX.PDF_ANNOTATION` |
 | **Version** | 1.0 |
+| **Live demo** | [oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation](https://oracleapex.com/ords/r/aamirkhanz/plugins/pdf-annotation) (user `demo`, password `Demo`) |
 | **Requires** | Oracle APEX 26.2 or later |
 | **License** | MIT |
 
